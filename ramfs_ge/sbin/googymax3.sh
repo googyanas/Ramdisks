@@ -3,12 +3,12 @@
 BB=/sbin/busybox
 
 # protect init from oom
-echo "-1000" > /proc/1/oom_score_adj;
-
-PIDOFINIT=$(pgrep -f "/sbin/ext/googymax3.sh");
-for i in $PIDOFINIT; do
-	echo "-600" > /proc/"$i"/oom_score_adj;
-done;
+# echo "-1000" > /proc/1/oom_score_adj;
+# 
+# PIDOFINIT=$(pgrep -f "/sbin/ext/googymax3.sh");
+# for i in $PIDOFINIT; do
+# 	echo "-600" > /proc/"$i"/oom_score_adj;
+# done;
 
 OPEN_RW()
 {
@@ -117,7 +117,7 @@ echo 450000000 > /sys/class/kgsl/kgsl-3d0/max_gpuclk
 # set min max boot freq to default.
 echo "1890000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 echo "384000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
-
+ 
 # Fix ROM dev wrong sets.
 setprop persist.adb.notify 0
 setprop persist.service.adb.enable 1
@@ -153,13 +153,22 @@ fi;
 read_defaults;
 read_config;
 
+if [ "$sammyzram" == "on" ];then
+
+  echo 1 > /sys/devices/virtual/block/zram0/reset
+  swapoff /dev/block/zram0
+
+  echo `expr $zramdisksize \* 1024 \* 1024` > /sys/devices/virtual/block/zram0/disksize
+  echo `expr $swappiness \* 1` > /proc/sys/vm/swappiness
+  mkswap /dev/block/zram0
+  swapon /dev/block/zram0
+
+fi;
+
 # cpu
 echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
 echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
-
-# zram isn't used so ...
-echo "0" > /proc/sys/vm/swappiness;
 
 if [ "$logger_mode" == "on" ]; then
 	echo "1" > /sys/kernel/logger_mode/logger_mode;
@@ -189,9 +198,9 @@ export CONFIG_BOOTING=
 OPEN_RW;
 
 # in case zram is disabled
-if [ "$sammyzram" == "off" ];then
-echo "0" > /proc/sys/vm/swappiness;
-fi;
+# if [ "$sammyzram" == "off" ];then
+# echo "0" > /proc/sys/vm/swappiness;
+# fi;
 
 if [ -d /system/etc/init.d ]; then
   /sbin/busybox chmod 755 /system/etc/init.d/*
@@ -276,8 +285,8 @@ if [ ! -f /system/app/STweaks_Googy-Max.apk ] ; then
 	$BB chmod 644 /system/app/STweaks_Googy-Max.apk;
 fi;
 
-echo "20000" > /proc/sys/vm/dirty_expire_centisecs;
-echo "20000" > /proc/sys/vm/dirty_writeback_centisecs;
+# echo "20000" > /proc/sys/vm/dirty_expire_centisecs;
+# echo "20000" > /proc/sys/vm/dirty_writeback_centisecs;
 
 	# disabling knox security at boot
 	pm disable com.sec.knox.seandroid;
@@ -311,11 +320,11 @@ echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle;
 echo "1" > /proc/sys/vm/overcommit_memory;
 echo "50" > /proc/sys/vm/overcommit_ratio;  
 
-    if [ "$sammyzram" == "on" ];then
-      echo "80" > /proc/sys/vm/swappiness;
-    else
-      echo "0" > /proc/sys/vm/swappiness;
-    fi;
+#     if [ "$sammyzram" == "on" ];then
+#       echo "80" > /proc/sys/vm/swappiness;
+#     else
+#       echo "0" > /proc/sys/vm/swappiness;
+#     fi;
 
 fi;
 

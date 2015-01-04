@@ -446,11 +446,24 @@ cat << ENDCONFIG
              <spinnerItem name="highspeed" value="hstcp"/> 
              <spinnerItem name="hybla" value="hybla"/> 
       </spinner>
+
+      <checkbox description="Enable or Disable ZRAM (needs reboot). Default: on" name="ZRAM" action="generic01 /tmp/sammyzram" label="ZRAM"/>      
       
+      <seekBar description="ZRAM disk size (needs reboot). Default: 500MB" name="ZRAM disk size" action="generic /tmp/zramdisksize" unit="MB" min="300" reversed="false" step="100" max="1000"/>
+      
+	<spinner description="VM swappiness. Default: 60" name="VM swappiness" action="generic /proc/sys/vm/swappiness">
+		<spinnerItem name="40" value="40"/> 
+		<spinnerItem name="50" value="50"/> 
+		<spinnerItem name="60" value="60"/> 
+		<spinnerItem name="70" value="70"/> 
+		<spinnerItem name="80" value="80"/> 
+		<spinnerItem name="90" value="90"/> 
+	</spinner>
+
       <spinner description="Set the low memory killer profile" 
                name="Low memory killer profile" 
                action="generic /sys/module/lowmemorykiller/parameters/minfree">"
-             <spinnerItem name="Stock" value="12288,15360,18432,21504,24576,30720"/> 
+             <spinnerItem name="Stock" value="18432,23040,27648,32256,36864,46080"/> 
              <spinnerItem name="Light" value="1024,2048,2560,4096,6144,8192"/> 
              <spinnerItem name="Moderate" value="1024,2048,4096,8192,12288,16384"/> 
              <spinnerItem name="Agressive" value="2048,4096,8192,16384,24576,32768"/> 
