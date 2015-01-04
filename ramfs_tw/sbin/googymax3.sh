@@ -3,12 +3,12 @@
 BB=/sbin/busybox
 
 # protect init from oom
-echo "-1000" > /proc/1/oom_score_adj;
+# echo "-1000" > /proc/1/oom_score_adj;
 
-PIDOFINIT=$(pgrep -f "/sbin/ext/googymax3.sh");
-for i in $PIDOFINIT; do
-	echo "-600" > /proc/"$i"/oom_score_adj;
-done;
+# PIDOFINIT=$(pgrep -f "/sbin/ext/googymax3.sh");
+# for i in $PIDOFINIT; do
+# 	echo "-600" > /proc/"$i"/oom_score_adj;
+# done;
 
 OPEN_RW()
 {
@@ -274,8 +274,8 @@ if [ ! -f /system/app/STweaks_Googy-Max.apk ] ; then
 	$BB chmod 644 /system/app/STweaks_Googy-Max.apk;
 fi;
 
-echo "20000" > /proc/sys/vm/dirty_expire_centisecs;
-echo "20000" > /proc/sys/vm/dirty_writeback_centisecs;
+# echo "20000" > /proc/sys/vm/dirty_expire_centisecs;
+# echo "20000" > /proc/sys/vm/dirty_writeback_centisecs;
 
 	# disabling knox security at boot
 	pm disable com.sec.knox.seandroid;
@@ -299,7 +299,7 @@ echo "8192" > /proc/sys/vm/min_free_kbytes;
 echo "524288" > /proc/sys/net/core/rmem_max;
 echo "90" > /proc/sys/vm/dirty_ratio;
 echo "268435456" > /proc/sys/kernel/shmmax;
-# echo "250" > /proc/sys/vm/dirty_expire_centisecs;
+echo "250" > /proc/sys/vm/dirty_expire_centisecs;
 echo "1" > /proc/sys/vm/drop_caches;
 echo "2048" > /proc/sys/kernel/msgmni;
 echo "2" > /proc/sys/vm/min_free_order_shift;
@@ -309,11 +309,11 @@ echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle;
 echo "1" > /proc/sys/vm/overcommit_memory;
 echo "50" > /proc/sys/vm/overcommit_ratio;  
 
-if [ "$sammyzram" == "on" ];then
-   echo "80" > /proc/sys/vm/swappiness;
-else
-   echo "0" > /proc/sys/vm/swappiness;
-fi;
+# if [ "$sammyzram" == "on" ];then
+#    echo "80" > /proc/sys/vm/swappiness;
+# else
+#    echo "0" > /proc/sys/vm/swappiness;
+# fi;
 
 fi;
 
