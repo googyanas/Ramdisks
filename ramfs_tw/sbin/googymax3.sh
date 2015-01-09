@@ -158,10 +158,23 @@ echo "$scaling_governor" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo "$scaling_min_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq;
 echo "$scaling_max_freq" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq;
 
-# zram 700M
+# zram
 if [ "$sammyzram" == "on" ];then
-UNIT="M"
-/system/bin/rtccd3 -a "$zramdisksize$UNIT"
+ if [ -f /system/bin/rtccd3 ]; then
+  UNIT="M"
+  /system/bin/rtccd3 -a "$zramdisksize$UNIT"
+  echo "1" > /data/.googymax3/zram.ggy
+ else
+  echo 1 > /sys/devices/virtual/block/zram0/reset
+  swapoff /dev/block/zram0
+  echo `expr $zramdisksize \* 1024 \* 1024` > /sys/devices/virtual/block/zram0/disksize
+  echo `expr $swappiness \* 1` > /proc/sys/vm/swappiness
+  mkswap /dev/block/zram0
+  swapon /dev/block/zram0
+  echo "2" > /data/.googymax3/zram.ggy
+ fi;
+else
+echo "0" > /data/.googymax3/zram.ggy
 fi;
 
 if [ "$logger_mode" == "on" ]; then
