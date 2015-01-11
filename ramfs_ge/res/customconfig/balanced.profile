@@ -72,6 +72,12 @@ sched_autogroup_enabled=on
 arch_power=off
 minfree=18432,23040,27648,32256,36864,46080
 sammyzram=on
-zramdisksize=500
+zramdisksize=700
 swappiness=60
+boost_ms=20
+sync_threshold=810000
+input_boost_freq=0
+input_boost_ms=500
+load_based_syncs=off
+migration_load_threshold=20
 

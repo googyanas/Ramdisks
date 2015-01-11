@@ -37,7 +37,7 @@ cat << ENDCONFIG
              <spinnerItem name="Darkness" value="darkness"/> 
        </spinner>
        
-      <spinner description="Set the maximum freqency the CPU scales up to. Default: 1890 MHz." 
+      <spinner description="Set the maximum frequency the CPU scales up to. Default: 1890 MHz." 
                name="CPU max frequency" 
                action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq">"
              <spinnerItem name="1890 MHz" value="1890000"/> 
@@ -57,7 +57,7 @@ cat << ENDCONFIG
              <spinnerItem name="384 MHz" value="384000"/> 
        </spinner>
        
-      <spinner description="Set the minimum freqency the CPU scales down to. Default: 384 MHz." 
+      <spinner description="Set the minimum frequency the CPU scales down to. Default: 384 MHz." 
                name="CPU min frequency" 
                action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq">"
              <spinnerItem name="384 MHz" value="384000"/> 
@@ -79,6 +79,41 @@ cat << ENDCONFIG
        
     </settingsPane>
     
+	<settingsPane description="CPU Boost Control." name="CPU Boost Control">
+    
+	<seekBar description="Boost duration. Default: 20ms" name="Boost duration" action="generic /sys/module/cpu_boost/parameters/boost_ms" unit="ms" min="0" reversed="false" step="10" max="500"/>
+	<spinner description="Sync threshold. Default: 810 MHz." 
+	      name="Sync threshold" 
+	      action="generic /sys/module/cpu_boost/parameters/sync_threshold">"
+             <spinnerItem name="Disabled" value="0"/> 
+             <spinnerItem name="384 MHz" value="384000"/> 
+             <spinnerItem name="486 MHz" value="486000"/> 
+             <spinnerItem name="594 MHz" value="594000"/> 
+	      <spinnerItem name="702 MHz" value="702000"/> 
+	      <spinnerItem name="810 MHz" value="810000"/> 
+	      <spinnerItem name="918 MHz" value="918000"/> 
+	      <spinnerItem name="1026 MHz" value="1026000"/> 
+	      <spinnerItem name="1134 MHz" value="1134000"/> 
+	</spinner>
+	<spinner description="Input boost frequency. Default: Disabled." 
+	      name="Input boost frequency" 
+	      action="generic /sys/module/cpu_boost/parameters/input_boost_freq">"
+             <spinnerItem name="Disabled" value="0"/> 
+             <spinnerItem name="384 MHz" value="384000"/> 
+             <spinnerItem name="486 MHz" value="486000"/> 
+             <spinnerItem name="594 MHz" value="594000"/> 
+	      <spinnerItem name="702 MHz" value="702000"/> 
+	      <spinnerItem name="810 MHz" value="810000"/> 
+	      <spinnerItem name="918 MHz" value="918000"/> 
+	      <spinnerItem name="1026 MHz" value="1026000"/> 
+	      <spinnerItem name="1134 MHz" value="1134000"/> 
+	</spinner>
+	<seekBar description="Boost on input duration. Default: 500ms" name="Boost input duration" action="generic /sys/module/cpu_boost/parameters/input_boost_ms" unit="ms" min="0" reversed="false" step="50" max="1000"/>
+	<checkbox description="Sync based on load. Default: Off" name="Sync based on load" action="generic01 /sys/module/cpu_boost/parameters/load_based_syncs" label="Boost sync based on load"/>
+	<seekBar description="Migration load threshold. Default: 20" name="Migration load threshold" action="generic /sys/module/cpu_boost/parameters/migration_load_threshold" unit="" min="5" reversed="false" step="5" max="95"/>
+
+	</settingsPane>
+
 	<settingsPane description="CPU Voltage Control. FOR ADVANCED USERS ONLY! USE IT AT YOUR OWN RISK!!!" name="CPU Voltage Control">
 
       <checkbox description="Enable/Disable CPU Voltage Control." name="CPU Voltage Control Switch" action="generic01 /tmp/CONTROLSWITCH_CPU" label="CPU Voltage Control Switch"/>
@@ -446,10 +481,10 @@ cat << ENDCONFIG
              <spinnerItem name="highspeed" value="hstcp"/> 
              <spinnerItem name="hybla" value="hybla"/> 
       </spinner>
-
-      <checkbox description="Enable or Disable ZRAM (needs reboot). Default: on" name="ZRAM" action="generic01 /tmp/sammyzram" label="ZRAM"/>      
       
-      <seekBar description="ZRAM disk size (needs reboot). Default: 500MB" name="ZRAM disk size" action="generic /tmp/zramdisksize" unit="MB" min="300" reversed="false" step="100" max="1000"/>
+      <checkbox description="Enable or Disable ZRAM (needs reboot). Default: on" name="Sammy ZRAM" action="generic01 /tmp/sammyzram" label="Sammy ZRAM"/>      
+      
+      <seekBar description="ZRAM disk size (needs reboot). Default: 700MB" name="ZRAM disk size" action="generic /tmp/zramdisksize" unit="MB" min="300" reversed="false" step="100" max="1000"/>
       
 	<spinner description="VM swappiness. Default: 60" name="VM swappiness" action="generic /proc/sys/vm/swappiness">
 		<spinnerItem name="40" value="40"/> 
@@ -469,9 +504,9 @@ cat << ENDCONFIG
              <spinnerItem name="Agressive" value="2048,4096,8192,16384,24576,32768"/> 
        </spinner>
 
-      <seekBar description="Dirty background memory buffer. Default: 20%" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
+      <seekBar description="Dirty background memory buffer. Default: 5%" name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
 
-      <seekBar description="Dirty real time memory buffer. Default: 40%" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
+      <seekBar description="Dirty real time memory buffer. Default: 20%" name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
 
       <seekBar description="Vibration intensity. Default: 50%" name="Vibration intensity" action="generic /sys/devices/virtual/timed_output/vibrator/pwm_value" unit="%" min="5" reversed="false" step="5" max="100"/>
       
